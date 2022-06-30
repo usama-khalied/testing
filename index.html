@@ -10,7 +10,9 @@
     <script src="//unpkg.com/topojson-client"></script>
   </head>
   <body>
+    <center>
     <div id="globeViz"></div>
+  </center>
   </body>
 
   <script type="text/javascript">
@@ -52,8 +54,8 @@
       document.getElementById("globeViz")
     )
       .backgroundColor("rgba(0,0,0,0)")
-      .height(720)
-      .width(720)
+      .height(400)
+      .width(400)
       // .waitForGlobeReady(true)
       .showGlobe(true)
       .showGraticules(true)
@@ -69,38 +71,42 @@
 
     const globeMaterial = world.globeMaterial();
 
-    globeMaterial.specular = new THREE.Color("#FECDCD");
+    globeMaterial.specular = new THREE.Color("#01A2E8");
     globeMaterial.shininess = 0;
-    globeMaterial.color = new THREE.Color("#e6002c");
+    globeMaterial.color = new THREE.Color("#01A2E8");
     globeMaterial.opacity = 0.1;
 
     fetch("./data.json")
       .then((res) => res.json())
       .then((countries) => {
-        // console.log(points);
+   
 
         world
           .hexPolygonsData(countries)
           .hexPolygonGeoJsonGeometry((it) => it)
           .hexPolygonResolution(3)
           .hexPolygonMargin(0.4)
-          .hexPolygonColor(() => "#e6002c");
+          .hexPolygonColor(() => "#01A2E8");
 
-        /*world
-          .polygonsData(countries)
-          .polygonGeoJsonGeometry((it) => it)
-          .polygonAltitude(0.1)
-          .polygonCapColor((feat) => "rgba(0, 0, 0, 0)")
-          .polygonSideColor(() => "rgba(0, 0, 0, 0)")
-          .polygonStrokeColor(() => "#E02B2B99");*/
+        // world
+        //   .polygonsData(countries)
+        //    .polygonGeoJsonGeometry((it) => it)
+        //    .polygonAltitude(0.1)
+        //    .polygonCapColor((feat) => "rgba(0, 0, 0, 0)")
+        //    .polygonSideColor(() => "rgba(0, 0, 0, 0)")
+        //    .polygonStrokeColor(() => "#E02B2B99");
 
         world
           .arcsData(arcsData)
-          .arcColor(() => "#B8743D")
+          .arcColor(() => "#01A2E8")
           .arcStroke(0.45)
+          
           .arcDashInitialGap(0.25)
-          // .arcAltitude(0.5)
+          .arcAltitude(0.5)
           .arcAltitudeAutoScale(0.5)
+          .onArcHover(arcsData.forEach(function (e)) {
+            e.
+          })
           .arcDashLength(1)
           .arcDashGap(0.5)
           .arcDashAnimateTime(() => Math.random() * 8000 + 500);
@@ -123,6 +129,6 @@
     }
 
     world.pointOfView({ altitude: 2.0, lat: 45.508888, lng: -73.561668 });
-    // console.log(world);
+    console.log(world);
   </script>
 </html>
