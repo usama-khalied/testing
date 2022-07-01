@@ -8,6 +8,12 @@
     <script src="//unpkg.com/three"></script>
     <script src="//unpkg.com/globe.gl"></script>
     <script src="//unpkg.com/topojson-client"></script>
+    <style>
+      body {
+        background-color:#000;
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
   </head>
   <body>
     <center>
@@ -41,6 +47,7 @@
         endLat: end.lat,
         endLng: end.lng,
         color: "#e6002c"
+
       });
     }
 
@@ -49,20 +56,23 @@
     // GDP per capita (avoiding countries with small pop)
     const getVal = (feat) =>
       feat.properties.GDP_MD_EST / Math.max(1e5, feat.properties.POP_EST);
-
+      
     const world = Globe({ waitForGlobeReady: true })(
       document.getElementById("globeViz")
     )
       .backgroundColor("rgba(0,0,0,0)")
-      .height(400)
-      .width(400)
+      .height(600)
+      .width(600)
       // .waitForGlobeReady(true)
       .showGlobe(true)
       .showGraticules(true)
+     
       .showAtmosphere(false)
       .ringsData(gData)
       // .ringAltitude(0.02)
-      .ringColor(() => "blue")
+      
+      .ringColor(() => "white")
+      //.ringsData((x => x.arcLabel = fruits[0]))
       .ringResolution(13)
       .ringMaxRadius(0.75)
       //.ringPropagationSpeed()
@@ -82,11 +92,11 @@
    
 
         world
-          .hexPolygonsData(countries)
-          .hexPolygonGeoJsonGeometry((it) => it)
-          .hexPolygonResolution(3)
-          .hexPolygonMargin(0.4)
-          .hexPolygonColor(() => "#01A2E8");
+          // .hexPolygonsData(countries)
+          // .hexPolygonGeoJsonGeometry((it) => it)
+          // .hexPolygonResolution(3)
+          // .hexPolygonMargin(0.4)
+          // .hexPolygonColor(() => "#01A2E8");
 
         // world
         //   .polygonsData(countries)
@@ -94,20 +104,35 @@
         //    .polygonAltitude(0.1)
         //    .polygonCapColor((feat) => "rgba(0, 0, 0, 0)")
         //    .polygonSideColor(() => "rgba(0, 0, 0, 0)")
-        //    .polygonStrokeColor(() => "#E02B2B99");
+        //    .polygonStrokeColor(() => "#fff");
 
         world
-          .arcsData(arcsData)
-          .arcColor(() => "#01A2E8")
-          .arcStroke(0.45)
-          
-          .arcDashInitialGap(0.25)
-          .arcAltitude(0.5)
-          .arcAltitudeAutoScale(0.5)
+          .labelsData(arcsData)
+          .labelColor(() => "#01A2E8")
+          // .arcStroke(0.45)
+          .labelLabel((d) => { return "Usama"  + '<i style="font-size:30px;color:#01A2E8" class="fa fa-plane" aria-hidden="true"></i>'})
+          // .arcDashInitialGap(0.25)
+          .labelAltitude(0.5)
+          // .arcAltitudeAutoScale(0.5)
+          labelSize(1)
+          // .arcDashLength(1)
+          // .arcDashGap(0.5)
+          // .arcDashAnimateTime(() => Math.random() * 8000 + 500);
+ 
+
+        
+        // world
+        //   .arcsData(arcsData)
+        //   .arcColor(() => "#01A2E8")
+        //   .arcStroke(0.45)
+        //   .arcLabel((d) => { return "Usama"  + '<i style="font-size:30px;color:#01A2E8" class="fa fa-plane" aria-hidden="true"></i>'})
+        //   .arcDashInitialGap(0.25)
+        //   .arcAltitude(0.5)
+        //   .arcAltitudeAutoScale(0.5)
        
-          .arcDashLength(1)
-          .arcDashGap(0.5)
-          .arcDashAnimateTime(() => Math.random() * 8000 + 500);
+        //   .arcDashLength(1)
+        //   .arcDashGap(0.5)
+        //   .arcDashAnimateTime(() => Math.random() * 8000 + 500);
       });
 
     world.controls().enableZoom = false;
@@ -126,7 +151,21 @@
       world.controls().enabled = false;
     }
 
-    world.pointOfView({ altitude: 2.0, lat: 45.508888, lng: -73.561668 });
+    world.pointOfView(  { altitude: 2.0, lat: 45.508888, lng: -73.561668 });
     console.log(world);
+
+
+const arr = [
+  {name:"Usama"},
+  {name:"Anus"},
+  {name:"Uzaier"},
+  {name:"Farhan"},
+  {name:"Bilal"},
+  {name:"Ahmer"},
+  {name:"Don"},
+
+  
+]
+
   </script>
 </html>
