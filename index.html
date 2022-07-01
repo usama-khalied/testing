@@ -8,16 +8,10 @@
     <script src="//unpkg.com/three"></script>
     <script src="//unpkg.com/globe.gl"></script>
     <script src="//unpkg.com/topojson-client"></script>
-    <style>
-      body {
-        background-color: #000;
-      }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
   </head>
   <body>
     <center>
-    <div style="font-size:30px;" id="globeViz"></div>
+    <div id="globeViz"></div>
   </center>
   </body>
 
@@ -46,12 +40,12 @@
         startLng: start.lng,
         endLat: end.lat,
         endLng: end.lng,
-        color: "#01A2E8"
+        color: "#e6002c"
       });
     }
 
-    const colorInterpolator = (t) => `#01A2E8,${Math.sqrt(1 - t)})`;
-     
+    const colorInterpolator = (t) => `rgba(92, 201, 245,${Math.sqrt(1 - t)})`;
+
     // GDP per capita (avoiding countries with small pop)
     const getVal = (feat) =>
       feat.properties.GDP_MD_EST / Math.max(1e5, feat.properties.POP_EST);
@@ -60,8 +54,8 @@
       document.getElementById("globeViz")
     )
       .backgroundColor("rgba(0,0,0,0)")
-      .height(600)
-      .width(600)
+      .height(400)
+      .width(400)
       // .waitForGlobeReady(true)
       .showGlobe(true)
       .showGraticules(true)
@@ -104,18 +98,19 @@
 
         world
           .arcsData(arcsData)
+          .arcColor(() => "#01A2E8")
           .arcStroke(0.45)
-          .arcLabel((d) => { return "Usama"  + '<i style="font-size:30px;color:#01A2E8" class="fa fa-plane" aria-hidden="true"></i>'})
+          
           .arcDashInitialGap(0.25)
           .arcAltitude(0.5)
           .arcAltitudeAutoScale(0.5)
-          .onArcHover((s) => {return arcsData.map(e => e.startLat)})
+       
           .arcDashLength(1)
           .arcDashGap(0.5)
           .arcDashAnimateTime(() => Math.random() * 8000 + 500);
       });
 
-    world.controls().enableZoom = true;
+    world.controls().enableZoom = false;
     world.controls().autoRotate = true;
     world.controls().rotateSpeed = 0.05;
     world.controls().autoRotateSpeed = 0.5;
@@ -131,7 +126,7 @@
       world.controls().enabled = false;
     }
 
-    world.pointOfView({ altitude: 1.0, lat: 45.508888, lng: -73.561668 });
+    world.pointOfView({ altitude: 2.0, lat: 45.508888, lng: -73.561668 });
     console.log(world);
   </script>
 </html>
