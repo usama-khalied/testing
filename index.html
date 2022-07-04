@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Earth Demo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./earth2.js"></script>
+
+    <script>
+      var myearth;
+      var sprites = [];
+
+      window.addEventListener("load", function () {
+        myearth = new Earth(document.getElementById("myearth"), {
+          light: "none",
+
+          texture: "texture-tiny-dots.svg",
+          transparent: true,
+
+          location: { lat: 0, lng: 0 },
+
+          autoRotate: true,
+          autoRotateSpeed: 2,
+          autoRotateDelay: 100,
+          autoRotateStart: 2000
+        });
+
+        myearth.addEventListener("ready", function () {
+          this.startAutoRotate();
+
+          // connections
+
+          // add 5 shine sprites
+
+          for (var i = 0; i < places.length; i++) {
+            /*sprites[i] = this.addSprite({
+              image: "point.svg",
+              scale: 0.01,
+              offset: -0.5
+            });*/
+
+            sprites[i] = myearth.addMarker({
+              location: {
+                lat: places[i].location[0],
+                lng: places[i].location[1]
+              },
+              mesh: ["Marker"],
+              color: places[i].color || 0xbea987,
+              scale: 0.4,
+              hotspotRadius: 0.7,
+              hotspotHeight: 1.2,
+              rotationY: -25,
+              rotationX: -15,
+              animations: []
+            });
+
+            var overlay = myearth.addOverlay({
+              location: sprites[i].location,
+              content: places[i].name || "",
+              depthScale: 0.25,
+              elementScale: 0.5,
+              className: "tip-overlay"
+            });
+
+            overlay.element.querySelector(".tip-overlay").style.transform =
+              places[i].transform || "translate(-50%, 1em)";
+
+            // pulse(i);
+            //setTimeout( function() { pulse( 1 ); }, 300 );
+          }
+
+          // draw lines
+          for (var i = 1; i < places.length; i++) {
+            myearth.addLine({
+              locations: [sprites[0].location, sprites[i].location],
+              color: places[i].color,
+              width: 0.2,
+              offsetFlow: 0.9
+            });
+          }
+        });
+      });
+
+      function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min;
+      }
+
+
+
+      const places = [
+        {
+          location: [49.2827, -123.1207],
+          color: 0x01A2E8,
+          name: "QVISE PVT LTD",
+
+        },
+        {
+          location: [14.599512, 120.984222],
+          color: 0x01A2E8,
+          name: "QVISE LLC"
+        },
+        // {
+        //   location: [49.05278, -122.790161],
+        //   color: 0x15c5a5,
+        //   name: "Tianji Aero Marine LLC",
+        //   transform: "translate(50%, 2em)"
+        // },
+        // {
+        //   location: [49.1046, -122.82351],
+        //   color: 0x39acff,
+        //   name: "Surrey / Langley",
+        //   transform: "translate(-100%, 3em)"
+        // },
+        // {
+        //   location: [45.51223, -122.658722],
+        //   color: 0xbea987,
+        //   name: "Portland",
+        //   transform: "translate(-50%, 3em)"
+        // },
+        {
+          location: [33.830296, -116.545296],
+          color: 0x01A2E8,
+          name: "Tianji Aero Marine LLC"
+        },
+        {
+          location: [51.507351, -0.127758],
+          color: 0x01A2E8,
+          name: "Tramiq"
+        },
+        // {
+        //   location: [19.075983, 72.877655],
+        //   color: 0x39acff,
+        //   name: "Mumbai"
+        // },
+        // {
+        //   location: [28.613939, 77.209023],
+        //   color: 0xbea987,
+        //   name: "New Delhi"
+        // },
+        // {
+        //   location: [-25.274399, 133.775131],
+        //   color: 0x39acff,
+        //   name: "Australia"
+        // },
+        // {
+        //   location: [35.937496, 14.375416],
+        //   color: 0x926bff,
+        //   name: "Malta"
+        // }
+      ];
+      let glo = document.querySelector('#glow');
+      function bigImg(x) {
+
+
+
+}
+function normalImg(x) {
+  // alert("Hellow world")
+
+}
+//       function bigImg(x) {
+//   x.style.height = "64px";
+//   x.style.width = "64px";
+// }
+
+// function normalImg(x) {
+//   x.style.height = "32px";
+//   x.style.width = "32px";
+// }
+      
+      function pulse(index) {
+        var random_location = places[index].location;
+        sprites[index].location = {
+          lat: random_location[0],
+          lng: random_location[1]
+        };
+
+        sprites[index].animate("scale", 0.6, {
+          easing: "out-quad",
+          duration: 300,
+
+          complete: function () {
+            this.animate("scale", 0.01, {
+              easing: "in-quad",
+              duration: 300,
+              complete: function () {
+
+                setTimeout(function () {
+                  pulse(index);
+                }, getRandomInt(100, 400));
+              }
+            });
+          }
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <center>
+    <div style="width: 600px;" class="earth-3d">
+      <div onmouseover="bigImg(this)" onmouseout="normalImg(this)" id="myearth">
+        <div  id="glow"></div>
+      </div>
+    </div>
+  </center>
+  <!-- <img onmouseover="bigImg(this)" onmouseout="normalImg(this)" border="0" src="smiley.gif" alt="Smiley" width="32" height="32"> -->
+
+  </body>
+</html>
