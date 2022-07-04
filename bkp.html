@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Earth Demo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./earth2.js"></script>
+
+    <script>
+      var myearth;
+      var sprites = [];
+
+      window.addEventListener("load", function () {
+        myearth = new Earth(document.getElementById("myearth"), {
+          light: "none",
+
+          texture: "texture-tiny-dots.svg",
+          transparent: true,
+
+          location: { lat: 0, lng: 0 },
+
+          autoRotate: true,
+          autoRotateSpeed: 1.2,
+          autoRotateDelay: 100,
+          autoRotateStart: 2000
+        });
+
+        myearth.addEventListener("ready", function () {
+          this.startAutoRotate();
+
+          // connections
+
+          // add 5 shine sprites
+
+          for (var i = 0; i < locations.length; i++) {
+            /*sprites[i] = this.addSprite({
+              image: "point.svg",
+              scale: 0.01,
+              offset: -0.5
+            });*/
+
+            sprites[i] = myearth.addMarker({
+              location: { lat: locations[i][0], lng: locations[i][1] },
+              mesh: ["Marker"],
+              color: colors[i] || 0xbea987,
+              scale: 0.4,
+              hotspotRadius: 0.7,
+              hotspotHeight: 1.2,
+              rotationY: 25,
+              rotationX: -15,
+              animations: []
+            });
+
+            myearth.addOverlay({
+              location: sprites[i].location,
+              content: names[i] || "",
+              depthScale: 0.25,
+              elementScale: 0.5,
+              className: "tip-overlay",
+              transform: "translate(-50%, 2em)"
+            });
+
+            // pulse(i);
+            //setTimeout( function() { pulse( 1 ); }, 300 );
+          }
+
+          // draw lines
+          for (var i = 1; i < locations.length; i++) {
+            myearth.addLine({
+              locations: [sprites[0].location, sprites[i].location],
+              color: colors[i],
+              width: 0.2,
+              offsetFlow: 0.5
+            });
+          }
+        });
+      });
+
+      function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min;
+      }
+
+      const places = [
+        {
+          location: [49.2827, -123.1207],
+          color: 0xbea987,
+          name: "Vancouver"
+        }
+      ];
+
+      const locations = [
+        [49.2827, -123.1207],
+        [14.599512, 120.984222], // Manila
+        [49.05278, -122.790161], // South Surrey
+        [49.1046, -122.82351], // Surrey / Langley
+        [45.51223, -122.658722], // Portland
+        [33.830296, -116.545296], // Palm Springs
+        [51.507351, -0.127758], // London
+        [19.075983, 72.877655], // Mumbai
+        [28.613939, 77.209023], // New Delhi
+        [-25.274399, 133.775131], // Australia
+        [35.937496, 14.375416] // Malta
+      ];
+
+      const colors = [
+        0xbea987,
+        0xbea987,
+        0x926bff,
+        0x15c5a5,
+        0x39acff,
+
+        0xbea987,
+        0xbea987,
+        0x926bff,
+        0x15c5a5,
+        0x39acff,
+
+        0xbea987
+      ];
+      const names = [
+        "Vancouver",
+        "Manila",
+        "South Surrey",
+        "Surrey / Langley",
+        "Portland",
+        "Palm Springs",
+        "London",
+        "Mumbai",
+        "New Delhi",
+        "Australia",
+        "Malta"
+      ];
+
+      function pulse(index) {
+        var random_location = locations[index];
+        sprites[index].location = {
+          lat: random_location[0],
+          lng: random_location[1]
+        };
+
+        sprites[index].animate("scale", 0.6, {
+          easing: "out-quad",
+          duration: 300,
+          complete: function () {
+            this.animate("scale", 0.01, {
+              easing: "in-quad",
+              duration: 300,
+              complete: function () {
+                setTimeout(function () {
+                  pulse(index);
+                }, getRandomInt(100, 400));
+              }
+            });
+          }
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="earth-3d">
+      <div id="myearth">
+        <div id="glow"></div>
+      </div>
+    </div>
+  </body>
+</html>
