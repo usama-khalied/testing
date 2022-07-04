@@ -1,0 +1,104 @@
+html,
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  /* background: #1b2737; */
+  background: #1A1A1A;
+  color: white;
+  font-family: sans-serif;
+}
+
+h1 {
+  font-size: 4rem;
+  margin-bottom: 10px;
+}
+p {
+  font-size: 1.5rem;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 690px;
+  width: 100%;
+  padding: 0 50px;
+  margin: 0 auto;
+}
+
+.earth-3d {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #1A1A1A;
+}
+
+.earth-3d .content {
+  position: relative;
+  z-index: 2;
+  max-width: 400px;
+  pointer-events: none;
+}
+
+#myearth {
+  width: 100%;
+  padding-bottom: 100%;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+}
+
+#myearth canvas {
+  filter: brightness(0);
+  transform: scale(1);
+  transition: filter 3.5s ease-in-out, transform 1.5s ease-in-out;
+}
+#myearth.earth-ready canvas {
+  filter: none;
+  transform: none;
+}
+
+#myearth::before {
+  content: none;
+}
+
+/* background glow */
+
+#glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+/* 
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 156, 255, 0) 33%,
+    rgba(0, 156, 255, 0.2) 52%,
+    rgba(0, 156, 255, 0.05) 54%,
+    rgba(0, 156, 255, 0) 70%
+  ); */
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 4s ease-in-out;
+}
+#myearth.earth-ready #glow {
+  opacity: 1;
+}
+
+.tip-overlay {
+  /* background-color: black; */
+  color: white;
+  /* padding: 0.6em 0.75em 0.55em 0.75em; */
+  border-radius: 0.2em;
+  font-family: sans-serif;
+  font-size: 1em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
